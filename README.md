@@ -1,22 +1,24 @@
 # SauceDemo CrewAI Selenium Orchestrator
 
+![QA Automation](https://github.com/Victoria198611/saucedemo-crewai-orchestrator/actions/workflows/qa.yml/badge.svg)
+
 AI-assisted QA automation project using:
 
 - Python
 - Selenium WebDriver
 - CrewAI
 - CrewAI Flow
-- Ollama local LLM (Qwen 2.5)
+- Ollama Local LLM (Qwen 2.5)
 
 ---
 
 # Description
 
-This project automates a complete shopping workflow on SauceDemo using an AI-assisted QA orchestration approach.
+This project implements an AI-assisted QA automation workflow using CrewAI orchestration and Selenium WebDriver.
 
-The execution flow is managed by CrewAI Flow, while Selenium WebDriver performs browser automation actions.
+The execution flow is managed by CrewAI Flow, while Selenium performs browser automation actions against the SauceDemo web application.
 
-The workflow covers:
+The automated workflow validates a complete shopping scenario:
 
 1. Valid login
 2. Product search
@@ -24,6 +26,12 @@ The workflow covers:
 4. Cart verification
 5. Checkout completion
 6. Final QA execution report
+
+Application under test:
+
+```text
+https://www.saucedemo.com/
+```
 
 ---
 
@@ -64,50 +72,60 @@ saucedemo-crewai-orchestrator
 ├── services/
 │   └── selenium_manager.py
 │
-└── tools/
-    ├── valid_login_flow_tool.py
-    ├── search_product_flow_tool.py
-    ├── add_to_cart_flow_tool.py
-    ├── verify_cart_flow_tool.py
-    └── checkout_flow_tool.py
+├── tools/
+│   ├── valid_login_flow_tool.py
+│   ├── search_product_flow_tool.py
+│   ├── add_to_cart_flow_tool.py
+│   ├── verify_cart_flow_tool.py
+│   └── checkout_flow_tool.py
+│
+└── .github/
+    └── workflows/
+        └── qa.yml
 ```
 
 ---
 
 # Automated Scenario
 
-Application:
+## Application
 
 ```text
+SauceDemo
 https://www.saucedemo.com/
 ```
 
-Test credentials:
+## Test Credentials
 
 ```text
 username: standard_user
 password: secret_sauce
 ```
 
-Test product:
+## Test Product
 
 ```text
 Sauce Labs Backpack
 ```
 
-Execution flow:
+## Execution Flow
 
 ```text
 LOGIN
   |
+  v
 SEARCH PRODUCT
   |
+  v
 ADD TO CART
   |
+  v
 VERIFY CART
   |
+  v
 CHECKOUT
   |
+  v
 FINAL QA REPORT
 ```
 
@@ -137,7 +155,7 @@ FINAL QA REPORT
 
 # Selenium Management
 
-The project uses a centralized Selenium manager:
+The project uses centralized Selenium driver management:
 
 ```text
 services/
@@ -146,61 +164,62 @@ services/
 
 Responsibilities:
 
+- Browser driver creation
 - Browser lifecycle management
-- Driver creation
 - Driver cleanup
+- Selenium session reuse
 
 ---
 
 # CrewAI Workflow
 
-The QA agent executes atomic automation tools:
+The QA execution is divided into atomic automation tools.
 
 ## Valid Login Tool
 
-Responsible for:
+Responsibilities:
 
-- Opening SauceDemo
-- Entering credentials
-- Validating successful authentication
+- Open SauceDemo application
+- Enter valid credentials
+- Validate successful authentication
 
 
 ## Search Product Tool
 
-Responsible for:
+Responsibilities:
 
-- Loading products
-- Searching requested product
-- Validating product existence
+- Load available products
+- Search requested product
+- Validate product existence
 
 
 ## Add To Cart Tool
 
-Responsible for:
+Responsibilities:
 
-- Selecting exact product
-- Adding item to cart
+- Select exact product
+- Add product to shopping cart
 
 
 ## Verify Cart Tool
 
-Responsible for:
+Responsibilities:
 
-- Opening cart
-- Confirming product presence
+- Open shopping cart
+- Confirm product presence
 
 
 ## Checkout Tool
 
-Responsible for:
+Responsibilities:
 
-- Completing checkout form
-- Finishing order
-- Validating confirmation message
+- Complete checkout information
+- Finish order process
+- Validate confirmation message
 
 ---
 
-# Run
+# Running The Project
 
 ## Install dependencies
 
@@ -242,9 +261,22 @@ Successful execution example:
 
 # CI/CD Integration
 
-The project is designed to be integrated into a CI/CD pipeline.
+The project includes GitHub Actions CI integration.
 
-Recommended pipeline:
+Workflow location:
+
+```text
+.github/
+└── workflows/
+    └── qa.yml
+```
+
+The pipeline executes automatically on:
+
+- push to main branch
+- pull requests
+
+Pipeline steps:
 
 ```text
 Developer Commit
@@ -256,42 +288,37 @@ GitHub Repository
 GitHub Actions
         |
         v
-Install Dependencies
+Checkout Source Code
         |
         v
-Start Test Environment
+Install Python Dependencies
+        |
+        v
+Configure Test Environment
         |
         v
 Execute QA Automation Flow
         |
         v
-Generate Test Reports
+Validate Execution Result
 ```
 
-Possible CI/CD technologies:
+CI/CD technologies:
 
 - GitHub Actions
-- Jenkins
-- GitLab CI
-
-Future pipeline steps:
-
-- Automated execution on every commit
-- Dependency validation
-- Browser automation execution
-- Test artifact collection
-- Report publishing
+- Jenkins (future integration)
+- GitLab CI (future integration)
 
 ---
 
 # Test Reporting - Allure
 
-The project can be extended with Allure Reporting for detailed QA visibility.
+The project architecture allows future integration with Allure Reporting.
 
-Planned integration:
+Planned reporting flow:
 
 ```text
-Selenium Execution
+QA Execution
         |
         v
 Test Results
@@ -303,20 +330,19 @@ Allure Report
 QA Dashboard
 ```
 
-Allure reports can provide:
+Allure integration can provide:
 
 - Test execution history
-- Step-by-step actions
-- Execution timeline
+- Step-by-step execution details
 - Screenshots on failures
-- Error details
-- Automation statistics
+- Error information
+- Execution statistics
 
 Recommended stack:
 
 - pytest
 - allure-pytest
-- GitHub Actions
+- GitHub Actions artifacts
 
 ---
 
@@ -325,9 +351,9 @@ Recommended stack:
 Possible improvements:
 
 - Add pytest test layer
-- Add Allure reporting
-- Add GitHub Actions workflow
+- Add Allure reporting integration
 - Add screenshots on Selenium failures
+- Add advanced CI/CD stages
 - Add environment configuration
 - Add parallel browser execution
 - Add Docker execution environment
@@ -338,9 +364,24 @@ Possible improvements:
 
 This project demonstrates an AI-assisted QA automation workflow combining:
 
-- Traditional browser automation
-- AI agent orchestration
-- Local LLM execution
-- Structured QA reporting
+- Browser automation with Selenium
+- AI agent orchestration with CrewAI
+- Local LLM execution with Ollama
+- Structured QA workflow management
+- Continuous Integration concepts
 
 The final result is an automated end-to-end shopping validation flow for SauceDemo.
+
+---
+
+# Author
+
+QA Automation Project
+
+Built with:
+
+- Python
+- Selenium
+- CrewAI
+- Ollama
+- GitHub Actions

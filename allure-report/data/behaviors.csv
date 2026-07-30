@@ -1,0 +1,8 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","Product","Search Product","0","0","1","0","0"
+"","Checkout","Complete Order","0","0","1","0","0"
+"","Authentication","Invalid Login","0","0","1","0","0"
+"","SauceDemo Shopping Flow","Complete purchase workflow","0","0","1","0","0"
+"","Cart","Verify Product In Cart","0","0","1","0","0"
+"","Authentication","Valid user login","0","0","2","0","0"
+"","Cart","Add Product To Cart","0","0","1","0","0"

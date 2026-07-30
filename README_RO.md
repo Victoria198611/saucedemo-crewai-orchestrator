@@ -1,5 +1,6 @@
-SauceDemo CrewAI Selenium Orchestrator
+# SauceDemo CrewAI Selenium Orchestrator
 
+![QA Automation](https://github.com/Victoria198611/saucedemo-crewai-orchestrator/actions/workflows/qa.yml/badge.svg)
 Proiect de automatizare QA asistat de AI folosind:
 
 - Python
@@ -132,9 +133,9 @@ Pipeline-ul execută automat:
 
 1. Checkout cod sursă
 2. Instalare dependințe Python
-3. Pornire Ollama
-4. Executare teste QA
-5. Generare rezultate
+3. Configurare mediu de test
+4. Executare QA Flow
+5. Validare rezultat
 
 Exemplu workflow:
 

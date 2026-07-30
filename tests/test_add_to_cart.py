@@ -6,19 +6,20 @@ from tools.add_to_cart_flow_tool import AddToCartFlowTool
 
 @allure.feature("Cart")
 @allure.story("Add Product To Cart")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.description(
+    "Verify that user can add a product to the shopping cart."
+)
 def test_add_to_cart():
 
-    with allure.step("Login to SauceDemo"):
-        login_result = ValidLoginFlowTool().run()
+    login_result = ValidLoginFlowTool().run()
 
     assert login_result["status"] == "success"
 
 
-    with allure.step("Add Sauce Labs Backpack to cart"):
-        result = AddToCartFlowTool().run(
-            "Sauce Labs Backpack"
-        )
+    result = AddToCartFlowTool().run(
+        "Sauce Labs Backpack"
+    )
 
 
-    with allure.step("Verify product was added"):
-        assert result["status"] == "success"
+    assert result["status"] == "success"

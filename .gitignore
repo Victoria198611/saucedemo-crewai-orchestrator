@@ -16,10 +16,6 @@ __pycache__/
 # Reports / generated files
 output/
 
-# Allure
-allure-results/
-allure-report/
-
 # Selenium
 screenshots/
 

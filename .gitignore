@@ -19,3 +19,10 @@ output/
 # Allure
 allure-results/
 allure-report/
+
+# Selenium
+screenshots/
+
+# OS files
+.DS_Store
+Thumbs.db

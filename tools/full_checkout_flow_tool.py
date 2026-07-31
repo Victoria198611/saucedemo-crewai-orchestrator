@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from services.selenium_manager import SeleniumManager
 
+
 class FullCheckoutFlowTool(BaseTool):
 
     name: str = "full_checkout_flow"
@@ -19,14 +20,24 @@ class FullCheckoutFlowTool(BaseTool):
         try:
             driver = SeleniumManager.get_driver()
 
+            print("DEBUG: Starting full checkout flow")
+
             # LOGIN
             driver.get("https://www.saucedemo.com/")
-            WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "user-name")))
+            print("DEBUG: Opened saucedemo.com")
+
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.ID, "user-name"))
+            )
             driver.find_element(By.ID, "user-name").send_keys("standard_user")
             driver.find_element(By.ID, "password").send_keys("secret_sauce")
             driver.find_element(By.ID, "login-button").click()
+            print("DEBUG: Login submitted")
 
-            WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "inventory_list")))
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "inventory_list"))
+            )
+            print("DEBUG: Inventory page loaded")
 
             # ADD TO CART
             mapping = {
@@ -45,38 +56,56 @@ class FullCheckoutFlowTool(BaseTool):
                     button_id = value
                     break
 
+            print(f"DEBUG: Using button_id = {button_id}")
+
             add_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.ID, button_id))
             )
             driver.execute_script("arguments[0].click();", add_button)
+            print("DEBUG: Product added to cart")
 
             cart_link = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link"))
             )
             driver.execute_script("arguments[0].click();", cart_link)
+            print("DEBUG: Cart opened")
 
             WebDriverWait(driver, 20).until(EC.url_contains("cart.html"))
+            print("DEBUG: Cart page loaded")
 
             # CHECKOUT
             checkout_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "checkout"))
             )
+            print("DEBUG: Checkout button found")
             checkout_button.click()
 
-            WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first-name")))
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "first-name"))
+            )
+            print("DEBUG: Checkout info page loaded")
+
             driver.find_element(By.ID, "first-name").send_keys(first_name)
             driver.find_element(By.ID, "last-name").send_keys(last_name)
             driver.find_element(By.ID, "postal-code").send_keys(postal_code)
+            print("DEBUG: User info filled")
 
             driver.find_element(By.ID, "continue").click()
+            print("DEBUG: Continue clicked")
 
             WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "finish"))
-            ).click()
+            )
+            print("DEBUG: Finish button found")
+
+            driver.find_element(By.ID, "finish").click()
+            print("DEBUG: Finish clicked")
 
             confirmation = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "complete-header"))
             ).text
+
+            print("DEBUG: Confirmation text:", confirmation)
 
             return {
                 "status": "success",
@@ -85,6 +114,7 @@ class FullCheckoutFlowTool(BaseTool):
             }
 
         except Exception as e:
+            print("DEBUG ERROR:", str(e))
             return {
                 "status": "error",
                 "message": str(e)

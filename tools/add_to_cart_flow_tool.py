@@ -15,9 +15,12 @@ class AddToCartFlowTool(BaseTool):
     def _run(self, product_name: str = "Sauce Labs Backpack"):
 
         try:
-
             driver = SeleniumManager.get_driver()
 
+            # --- Ensure inventory page is fully loaded before proceeding ---
+            WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "inventory_list"))
+            )
 
             mapping = {
                 "Sauce Labs Backpack": "add-to-cart-sauce-labs-backpack",
@@ -28,67 +31,43 @@ class AddToCartFlowTool(BaseTool):
                 "Test.allTheThings() T-Shirt (Red)": "add-to-cart-test.allthethings()-t-shirt-(red)"
             }
 
-
             normalized = product_name.strip("'\"").lower()
 
             button_id = None
-
             for key, value in mapping.items():
-
                 if normalized in key.lower():
                     button_id = value
                     break
 
-
             if not button_id:
-
                 return {
                     "status": "error",
                     "message": f"No matching product found for {product_name}"
                 }
 
-
-
             WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable(
-                    (By.ID, button_id)
-                )
+                EC.element_to_be_clickable((By.ID, button_id))
             ).click()
 
-
-
             cart_link = WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable(
-                    (By.CLASS_NAME, "shopping_cart_link")
-                )
+                EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link"))
             )
-
             cart_link.click()
 
-
-
-            cart_item = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, "cart_item")
-                )
+            cart_item = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "cart_item"))
             )
 
-
             cart_product_name = cart_item.find_element(
-                By.CLASS_NAME,
-                "inventory_item_name"
+                By.CLASS_NAME, "inventory_item_name"
             ).text
-
-
 
             return {
                 "status": "success",
                 "added_product": cart_product_name
             }
 
-
         except Exception as e:
-
             return {
                 "status": "error",
                 "message": str(e)

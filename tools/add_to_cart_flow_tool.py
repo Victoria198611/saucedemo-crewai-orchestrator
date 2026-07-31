@@ -45,16 +45,17 @@ class AddToCartFlowTool(BaseTool):
                     "message": f"No matching product found for {product_name}"
                 }
 
-            WebDriverWait(driver, 20).until(
+            add_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.ID, button_id)),
                 message=f"STEP 2 FAILED: button {button_id} not clickable"
-            ).click()
+            )
+            driver.execute_script("arguments[0].click();", add_button)
 
             cart_link = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link")),
                 message="STEP 3 FAILED: cart link not clickable"
             )
-            cart_link.click()
+            driver.execute_script("arguments[0].click();", cart_link)
 
             WebDriverWait(driver, 20).until(
                 EC.url_contains("cart.html"),

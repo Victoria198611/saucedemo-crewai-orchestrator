@@ -14,16 +14,11 @@ from tools.checkout_flow_tool import CheckoutFlowTool
 def test_checkout():
 
     login_result = ValidLoginFlowTool().run()
-
     assert login_result["status"] == "success"
 
-
-    add_result = AddToCartFlowTool().run(
-        "Sauce Labs Backpack"
-    )
-
+    add_result = AddToCartFlowTool().run("Sauce Labs Backpack")
+    print("DEBUG add_result:", add_result)
     assert add_result["status"] == "success"
-
 
     result = CheckoutFlowTool().run(
         product_name="Sauce Labs Backpack",
@@ -31,6 +26,5 @@ def test_checkout():
         last_name="User",
         postal_code="12345"
     )
-
 
     assert result["status"] == "success"

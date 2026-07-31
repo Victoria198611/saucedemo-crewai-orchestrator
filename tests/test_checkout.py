@@ -1,8 +1,6 @@
 import allure
 
-from tools.valid_login_flow_tool import ValidLoginFlowTool
-from tools.add_to_cart_flow_tool import AddToCartFlowTool
-from tools.checkout_flow_tool import CheckoutFlowTool
+from tools.full_checkout_flow_tool import FullCheckoutFlowTool
 
 
 @allure.feature("Checkout")
@@ -13,14 +11,7 @@ from tools.checkout_flow_tool import CheckoutFlowTool
 )
 def test_checkout():
 
-    login_result = ValidLoginFlowTool().run()
-    assert login_result["status"] == "success"
-
-    add_result = AddToCartFlowTool().run("Sauce Labs Backpack")
-    print("DEBUG add_result:", add_result)
-    assert add_result["status"] == "success"
-
-    result = CheckoutFlowTool().run(
+    result = FullCheckoutFlowTool().run(
         product_name="Sauce Labs Backpack",
         first_name="Test",
         last_name="User",

@@ -1,6 +1,6 @@
 import pytest
 
-from services.selenium_manager import SeleniumManager
+from utils.selenium_manager import SeleniumManager
 
 
 @pytest.fixture(autouse=True)

@@ -11,6 +11,7 @@ def test_invalid_login():
 
     with allure.step("Execute invalid login flow"):
         result = InvalidLoginFlowTool().run()
+        print("DEBUG invalid_login result:", result)
 
     with allure.step("Verify login failure"):
         assert result["status"] == "success"

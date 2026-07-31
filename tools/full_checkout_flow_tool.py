@@ -1,7 +1,9 @@
 from crewai.tools import BaseTool
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 from services.selenium_manager import SeleniumManager
 
 
@@ -17,29 +19,51 @@ class FullCheckoutFlowTool(BaseTool):
             last_name: str = "User",
             postal_code: str = "12345"
     ):
+
         try:
             driver = SeleniumManager.get_driver()
 
+            wait = WebDriverWait(driver, 20)
+
             print("DEBUG: Starting full checkout flow")
 
+            # =========================
             # LOGIN
+            # =========================
+
             driver.get("https://www.saucedemo.com/")
             print("DEBUG: Opened saucedemo.com")
 
-            WebDriverWait(driver, 20).until(
+            wait.until(
                 EC.presence_of_element_located((By.ID, "user-name"))
             )
-            driver.find_element(By.ID, "user-name").send_keys("standard_user")
-            driver.find_element(By.ID, "password").send_keys("secret_sauce")
+
+            driver.find_element(By.ID, "user-name").send_keys(
+                "standard_user"
+            )
+
+            driver.find_element(By.ID, "password").send_keys(
+                "secret_sauce"
+            )
+
             driver.find_element(By.ID, "login-button").click()
+
             print("DEBUG: Login submitted")
 
-            WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "inventory_list"))
+
+            wait.until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "inventory_list")
+                )
             )
+
             print("DEBUG: Inventory page loaded")
 
+
+            # =========================
             # ADD TO CART
+            # =========================
+
             mapping = {
                 "Sauce Labs Backpack": "add-to-cart-sauce-labs-backpack",
                 "Sauce Labs Bike Light": "add-to-cart-sauce-labs-bike-light",
@@ -49,81 +73,162 @@ class FullCheckoutFlowTool(BaseTool):
                 "Test.allTheThings() T-Shirt (Red)": "add-to-cart-test.allthethings()-t-shirt-(red)"
             }
 
+
             normalized = product_name.strip("'\"").lower()
+
             button_id = None
+
             for key, value in mapping.items():
                 if normalized in key.lower():
                     button_id = value
                     break
 
+
+            if not button_id:
+                raise Exception(
+                    f"Product not found: {product_name}"
+                )
+
+
             print(f"DEBUG: Using button_id = {button_id}")
 
-            add_button = WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.ID, button_id))
+
+            add_button = wait.until(
+                EC.element_to_be_clickable(
+                    (By.ID, button_id)
+                )
             )
-            driver.execute_script("arguments[0].click();", add_button)
+
+            add_button.click()
+
             print("DEBUG: Product added to cart")
 
-            cart_link = WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link"))
+
+            # =========================
+            # CART
+            # =========================
+
+            cart_link = wait.until(
+                EC.element_to_be_clickable(
+                    (By.CLASS_NAME, "shopping_cart_link")
+                )
             )
-            driver.execute_script("arguments[0].click();", cart_link)
+
+            cart_link.click()
+
             print("DEBUG: Cart opened")
 
-            WebDriverWait(driver, 20).until(EC.url_contains("cart.html"))
+
+            wait.until(
+                EC.url_contains("cart.html")
+            )
+
             print("DEBUG: Cart page loaded")
 
-            # CHECKOUT
-            checkout_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.ID, "checkout"))
-            )
-            print("DEBUG: Checkout button found")
 
-            driver.execute_script("arguments[0].scrollIntoView(true);", checkout_button)
-            driver.execute_script("arguments[0].click();", checkout_button)
-            print("DEBUG: Checkout clicked via JS")
+            # =========================
+            # CHECKOUT START
+            # =========================
 
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.ID, "first-name"))
+            checkout_button = wait.until(
+                EC.element_to_be_clickable(
+                    (By.ID, "checkout")
+                )
             )
+
+            checkout_button.click()
+
+            print("DEBUG: Checkout clicked")
+
+
+            wait.until(
+                EC.presence_of_element_located(
+                    (By.ID, "first-name")
+                )
+            )
+
             print("DEBUG: Checkout info page loaded")
 
-            driver.find_element(By.ID, "first-name").send_keys(first_name)
-            driver.find_element(By.ID, "last-name").send_keys(last_name)
-            driver.find_element(By.ID, "postal-code").send_keys(postal_code)
+
+            # =========================
+            # USER INFO
+            # =========================
+
+            driver.find_element(
+                By.ID,
+                "first-name"
+            ).send_keys(first_name)
+
+            driver.find_element(
+                By.ID,
+                "last-name"
+            ).send_keys(last_name)
+
+            driver.find_element(
+                By.ID,
+                "postal-code"
+            ).send_keys(postal_code)
+
+
             print("DEBUG: User info filled")
 
-            # CONTINUE (scroll + JS click)
-            continue_button = driver.find_element(By.ID, "continue")
-            driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
-            driver.execute_script("arguments[0].click();", continue_button)
-            print("DEBUG: Continue clicked via JS")
 
-            # ⭐ CRITICAL FIX: WAIT FOR STEP TWO PAGE + RETRY IF NEEDED
-            try:
-                WebDriverWait(driver, 15).until(
-                    EC.url_contains("checkout-step-two.html")
+            # =========================
+            # CONTINUE
+            # =========================
+
+            continue_button = wait.until(
+                EC.element_to_be_clickable(
+                    (By.ID, "continue")
                 )
-                print("DEBUG: Step two page loaded")
-            except:
-                print("DEBUG: Step two did NOT load, retrying click...")
-                driver.execute_script("arguments[0].click();", continue_button)
-                WebDriverWait(driver, 15).until(
-                    EC.url_contains("checkout-step-two.html")
+            )
+
+            driver.execute_script(
+                "arguments[0].scrollIntoView({block:'center'});",
+                continue_button
+            )
+
+            continue_button.click()
+
+            print("DEBUG: Continue clicked")
+
+
+            wait.until(
+                EC.url_contains(
+                    "checkout-step-two.html"
                 )
-                print("DEBUG: Step two page loaded after retry")
+            )
 
-            # FINISH (scroll + JS click)
-            finish_button = driver.find_element(By.ID, "finish")
-            driver.execute_script("arguments[0].scrollIntoView(true);", finish_button)
-            driver.execute_script("arguments[0].click();", finish_button)
-            print("DEBUG: Finish clicked via JS")
+            print("DEBUG: Step two page loaded")
 
-            confirmation = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "complete-header"))
+
+            # =========================
+            # FINISH
+            # =========================
+
+            finish_button = wait.until(
+                EC.element_to_be_clickable(
+                    (By.ID, "finish")
+                )
+            )
+
+            finish_button.click()
+
+            print("DEBUG: Finish clicked")
+
+
+            confirmation = wait.until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "complete-header")
+                )
             ).text
 
-            print("DEBUG: Confirmation text:", confirmation)
+
+            print(
+                "DEBUG: Confirmation text:",
+                confirmation
+            )
+
 
             return {
                 "status": "success",
@@ -131,8 +236,14 @@ class FullCheckoutFlowTool(BaseTool):
                 "confirmation": confirmation
             }
 
+
         except Exception as e:
-            print("DEBUG ERROR:", str(e))
+
+            print(
+                "DEBUG ERROR:",
+                str(e)
+            )
+
             return {
                 "status": "error",
                 "message": str(e)

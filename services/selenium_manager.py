@@ -1,14 +1,17 @@
 import os
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+
 
 class SeleniumManager:
     _driver = None
 
-    @staticmethod
-    def get_driver():
-        if SeleniumManager._driver is None:
+    @classmethod
+    def get_driver(cls):
+        if cls._driver is None:
             options = Options()
 
             headless = os.getenv("HEADLESS", "true").lower() == "true"
@@ -20,9 +23,17 @@ class SeleniumManager:
             options.add_argument("--disable-gpu")
             options.add_argument("--window-size=1920,1080")
 
-            SeleniumManager._driver = webdriver.Chrome(
-                ChromeDriverManager().install(),
+            service = Service(ChromeDriverManager().install())
+
+            cls._driver = webdriver.Chrome(
+                service=service,
                 options=options
             )
 
-        return SeleniumManager._driver
+        return cls._driver
+
+    @classmethod
+    def quit_driver(cls):
+        if cls._driver is not None:
+            cls._driver.quit()
+            cls._driver = None

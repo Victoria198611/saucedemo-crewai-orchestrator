@@ -99,11 +99,19 @@ class FullCheckoutFlowTool(BaseTool):
             driver.execute_script("arguments[0].click();", continue_button)
             print("DEBUG: Continue clicked via JS")
 
-            # ⭐ FIX CRITIC: AȘTEAPTĂ URL-UL PAGINII STEP TWO
-            WebDriverWait(driver, 10).until(
-                EC.url_contains("checkout-step-two.html")
-            )
-            print("DEBUG: Step two page loaded")
+            # ⭐ CRITICAL FIX: WAIT FOR STEP TWO PAGE + RETRY IF NEEDED
+            try:
+                WebDriverWait(driver, 15).until(
+                    EC.url_contains("checkout-step-two.html")
+                )
+                print("DEBUG: Step two page loaded")
+            except:
+                print("DEBUG: Step two did NOT load, retrying click...")
+                driver.execute_script("arguments[0].click();", continue_button)
+                WebDriverWait(driver, 15).until(
+                    EC.url_contains("checkout-step-two.html")
+                )
+                print("DEBUG: Step two page loaded after retry")
 
             # FINISH (scroll + JS click)
             finish_button = driver.find_element(By.ID, "finish")

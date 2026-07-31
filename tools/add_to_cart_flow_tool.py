@@ -56,6 +56,11 @@ class AddToCartFlowTool(BaseTool):
             )
             cart_link.click()
 
+            WebDriverWait(driver, 20).until(
+                EC.url_contains("cart.html"),
+                message="STEP 3b FAILED: did not navigate to cart page"
+            )
+
             cart_item = WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "cart_item")),
                 message="STEP 4 FAILED: cart_item not found"

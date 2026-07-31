@@ -78,7 +78,11 @@ class FullCheckoutFlowTool(BaseTool):
                 EC.element_to_be_clickable((By.ID, "checkout"))
             )
             print("DEBUG: Checkout button found")
-            checkout_button.click()
+
+            # ⭐ FIX PENTRU GITHUB ACTIONS
+            driver.execute_script("arguments[0].scrollIntoView(true);", checkout_button)
+            driver.execute_script("arguments[0].click();", checkout_button)
+            print("DEBUG: Checkout clicked via JS")
 
             WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.ID, "first-name"))
@@ -93,12 +97,12 @@ class FullCheckoutFlowTool(BaseTool):
             driver.find_element(By.ID, "continue").click()
             print("DEBUG: Continue clicked")
 
-            WebDriverWait(driver, 10).until(
+            finish_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "finish"))
             )
             print("DEBUG: Finish button found")
 
-            driver.find_element(By.ID, "finish").click()
+            driver.execute_script("arguments[0].click();", finish_button)
             print("DEBUG: Finish clicked")
 
             confirmation = WebDriverWait(driver, 10).until(

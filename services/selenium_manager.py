@@ -27,8 +27,9 @@ class SeleniumManager:
             options.add_argument("--disable-extensions")
             options.add_argument("--disable-software-rasterizer")
             options.add_argument("--remote-debugging-port=9222")
+            options.add_argument("--disable-popup-blocking")
+            options.add_argument("--disable-notifications")
             options.add_argument("--window-size=1920,1080")
-
             service = Service(
                 ChromeDriverManager().install()
             )

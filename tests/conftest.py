@@ -1,7 +1,6 @@
 import pytest
 
-from utils.selenium_manager import SeleniumManager
-
+from services.selenium_manager import SeleniumManager
 
 @pytest.fixture(autouse=True)
 def cleanup_driver():

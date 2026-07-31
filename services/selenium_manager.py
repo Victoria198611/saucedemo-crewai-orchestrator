@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import time
 
 
 class SeleniumManager:
@@ -19,12 +20,18 @@ class SeleniumManager:
             options.add_argument("--disable-gpu")
             options.add_argument("--window-size=1920,1080")
 
-            cls._driver = webdriver.Chrome(
-                options=options
-            )
+            last_error = None
+            for attempt in range(3):
+                try:
+                    cls._driver = webdriver.Chrome(options=options)
+                    break
+                except Exception as e:
+                    last_error = e
+                    time.sleep(2)
+            else:
+                raise last_error
 
         return cls._driver
-
 
     @classmethod
     def quit_driver(cls):

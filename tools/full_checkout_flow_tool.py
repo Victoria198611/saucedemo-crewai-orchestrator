@@ -79,7 +79,6 @@ class FullCheckoutFlowTool(BaseTool):
             )
             print("DEBUG: Checkout button found")
 
-            # ⭐ FIX PENTRU GITHUB ACTIONS
             driver.execute_script("arguments[0].scrollIntoView(true);", checkout_button)
             driver.execute_script("arguments[0].click();", checkout_button)
             print("DEBUG: Checkout clicked via JS")
@@ -94,16 +93,23 @@ class FullCheckoutFlowTool(BaseTool):
             driver.find_element(By.ID, "postal-code").send_keys(postal_code)
             print("DEBUG: User info filled")
 
-            driver.find_element(By.ID, "continue").click()
-            print("DEBUG: Continue clicked")
+            #  FIX: scroll + JS click pe Continue
+            continue_button = driver.find_element(By.ID, "continue")
+            driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+            driver.execute_script("arguments[0].click();", continue_button)
+            print("DEBUG: Continue clicked via JS")
 
-            finish_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.ID, "finish"))
+            #  FIX: așteaptă pagina overview
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "finish"))
             )
             print("DEBUG: Finish button found")
 
+            #  FIX: scroll + JS click pe Finish
+            finish_button = driver.find_element(By.ID, "finish")
+            driver.execute_script("arguments[0].scrollIntoView(true);", finish_button)
             driver.execute_script("arguments[0].click();", finish_button)
-            print("DEBUG: Finish clicked")
+            print("DEBUG: Finish clicked via JS")
 
             confirmation = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "complete-header"))

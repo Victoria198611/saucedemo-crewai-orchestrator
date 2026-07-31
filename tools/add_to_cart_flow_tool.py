@@ -49,7 +49,7 @@ class AddToCartFlowTool(BaseTool):
 
 
 
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(
                     (By.ID, button_id)
                 )
@@ -57,7 +57,7 @@ class AddToCartFlowTool(BaseTool):
 
 
 
-            cart_link = WebDriverWait(driver, 10).until(
+            cart_link = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(
                     (By.CLASS_NAME, "shopping_cart_link")
                 )

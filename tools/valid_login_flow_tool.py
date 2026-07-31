@@ -21,7 +21,7 @@ class ValidLoginFlowTool(BaseTool):
 
             driver.get("https://www.saucedemo.com/")
 
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.ID, "user-name"))
             )
 
@@ -41,7 +41,7 @@ class ValidLoginFlowTool(BaseTool):
             ).click()
 
 
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located(
                     (By.CLASS_NAME, "inventory_list")
                 )

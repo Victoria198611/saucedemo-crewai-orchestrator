@@ -17,9 +17,9 @@ class AddToCartFlowTool(BaseTool):
         try:
             driver = SeleniumManager.get_driver()
 
-            # --- Ensure inventory page is fully loaded before proceeding ---
             WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "inventory_list"))
+                EC.presence_of_element_located((By.CLASS_NAME, "inventory_list")),
+                message="STEP 1 FAILED: inventory_list not found"
             )
 
             mapping = {
@@ -46,16 +46,19 @@ class AddToCartFlowTool(BaseTool):
                 }
 
             WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.ID, button_id))
+                EC.element_to_be_clickable((By.ID, button_id)),
+                message=f"STEP 2 FAILED: button {button_id} not clickable"
             ).click()
 
             cart_link = WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link"))
+                EC.element_to_be_clickable((By.CLASS_NAME, "shopping_cart_link")),
+                message="STEP 3 FAILED: cart link not clickable"
             )
             cart_link.click()
 
             cart_item = WebDriverWait(driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "cart_item"))
+                EC.presence_of_element_located((By.CLASS_NAME, "cart_item")),
+                message="STEP 4 FAILED: cart_item not found"
             )
 
             cart_product_name = cart_item.find_element(

@@ -93,19 +93,19 @@ class FullCheckoutFlowTool(BaseTool):
             driver.find_element(By.ID, "postal-code").send_keys(postal_code)
             print("DEBUG: User info filled")
 
-            #  FIX: scroll + JS click pe Continue
+            # CONTINUE (scroll + JS click)
             continue_button = driver.find_element(By.ID, "continue")
             driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
             driver.execute_script("arguments[0].click();", continue_button)
             print("DEBUG: Continue clicked via JS")
 
-            #  FIX: așteaptă pagina overview
+            # WAIT FOR OVERVIEW PAGE
             WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.ID, "finish"))
+                EC.presence_of_element_located((By.CLASS_NAME, "summary_info"))
             )
-            print("DEBUG: Finish button found")
+            print("DEBUG: Overview page loaded")
 
-            #  FIX: scroll + JS click pe Finish
+            # FINISH (scroll + JS click)
             finish_button = driver.find_element(By.ID, "finish")
             driver.execute_script("arguments[0].scrollIntoView(true);", finish_button)
             driver.execute_script("arguments[0].click();", finish_button)

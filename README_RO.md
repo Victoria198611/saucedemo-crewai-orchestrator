@@ -212,8 +212,8 @@ Selenium
 Workflow orchestration
 CI/CD concepts
 Test Reporting
+
 Autor
 
-QA Automation Project
-
-Built with Python + Selenium + CrewAI
+QA Automation Engineer | Java, Python, Selenium, CrewAI
+GitHub: github.com/Victoria198611

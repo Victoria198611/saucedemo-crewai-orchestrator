@@ -1,0 +1,10 @@
+Using Tool: full_checkout_flow
+DEBUG: Starting full checkout flow
+DEBUG: Opened saucedemo.com
+DEBUG: Login submitted
+DEBUG: Inventory page loaded
+DEBUG: Using button_id = add-to-cart-sauce-labs-backpack
+DEBUG: Product added to cart
+DEBUG: Cart opened
+DEBUG ERROR: Message: 
+

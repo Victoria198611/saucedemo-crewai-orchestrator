@@ -214,6 +214,6 @@ CI/CD concepts
 Test Reporting
 
 Autor
-
+Victoria Vutcariov
 QA Automation Engineer | Java, Python, Selenium, CrewAI
 GitHub: github.com/Victoria198611

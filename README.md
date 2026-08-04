@@ -372,16 +372,9 @@ This project demonstrates an AI-assisted QA automation workflow combining:
 
 The final result is an automated end-to-end shopping validation flow for SauceDemo.
 
----
 
 # Author
 
-QA Automation Project
-
-Built with:
-
-- Python
-- Selenium
-- CrewAI
-- Ollama
-- GitHub Actions
+Victoria Vutcariov
+QA Automation Engineer | Java, Python, Selenium, CrewAI
+GitHub: github.com/Victoria198611

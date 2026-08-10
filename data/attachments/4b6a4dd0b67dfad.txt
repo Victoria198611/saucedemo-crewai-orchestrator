@@ -1,0 +1,21 @@
+Using Tool: full_checkout_flow
+DEBUG: Starting full checkout flow
+DEBUG: Opened saucedemo.com
+DEBUG: Login submitted
+DEBUG: Inventory page loaded
+DEBUG: Using button_id = add-to-cart-sauce-labs-backpack
+DEBUG: Product added to cart
+DEBUG: Cart opened
+DEBUG: Cart page loaded
+DEBUG: Checkout clicked
+DEBUG: Checkout info page loaded
+DEBUG: User info filled
+DEBUG: first-name value = Test
+DEBUG: last-name value = User
+DEBUG: postal-code value = 12345
+DEBUG: Continue clicked
+DEBUG: No error banner found on page
+DEBUG: URL right after continue click: https://www.saucedemo.com/checkout-step-two.html
+DEBUG: Step two page loaded
+DEBUG: Finish clicked
+DEBUG: Confirmation text: Thank you for your order!

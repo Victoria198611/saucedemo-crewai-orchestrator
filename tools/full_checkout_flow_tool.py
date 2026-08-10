@@ -1,3 +1,8 @@
+Aproape perfect — a mai rămas o singură linie nealiniată: print("DEBUG: Checkout clicked") are 8 spații în loc de 12 (vezi cum e "sărită" mai în stânga față de liniile de deasupra și de dedesubt).
+
+Ca să nu mai riști alte erori de indentare, îți dau tot fișierul complet, corect — poți să-l copiezi și să-l pui direct peste conținutul vechi:
+
+python
 from crewai.tools import BaseTool
 
 from selenium.webdriver.common.by import By
@@ -51,7 +56,6 @@ class FullCheckoutFlowTool(BaseTool):
 
             print("DEBUG: Login submitted")
 
-
             wait.until(
                 EC.presence_of_element_located(
                     (By.CLASS_NAME, "inventory_list")
@@ -59,7 +63,6 @@ class FullCheckoutFlowTool(BaseTool):
             )
 
             print("DEBUG: Inventory page loaded")
-
 
             # =========================
             # ADD TO CART
@@ -74,7 +77,6 @@ class FullCheckoutFlowTool(BaseTool):
                 "Test.allTheThings() T-Shirt (Red)": "add-to-cart-test.allthethings()-t-shirt-(red)"
             }
 
-
             normalized = product_name.strip("'\"").lower()
 
             button_id = None
@@ -84,15 +86,12 @@ class FullCheckoutFlowTool(BaseTool):
                     button_id = value
                     break
 
-
             if not button_id:
                 raise Exception(
                     f"Product not found: {product_name}"
                 )
 
-
             print(f"DEBUG: Using button_id = {button_id}")
-
 
             add_button = wait.until(
                 EC.element_to_be_clickable(
@@ -103,7 +102,6 @@ class FullCheckoutFlowTool(BaseTool):
             add_button.click()
 
             print("DEBUG: Product added to cart")
-
 
             # =========================
             # CART
@@ -119,13 +117,11 @@ class FullCheckoutFlowTool(BaseTool):
 
             print("DEBUG: Cart opened")
 
-
             wait.until(
                 EC.url_contains("cart.html")
             )
 
             print("DEBUG: Cart page loaded")
-
 
             # =========================
             # CHECKOUT START
@@ -137,10 +133,17 @@ class FullCheckoutFlowTool(BaseTool):
                 )
             )
 
-            checkout_button.click()
+            driver.execute_script(
+                "arguments[0].scrollIntoView({block:'center'});",
+                checkout_button
+            )
+
+            driver.execute_script(
+                "arguments[0].click();",
+                checkout_button
+            )
 
             print("DEBUG: Checkout clicked")
-
 
             wait.until(
                 EC.presence_of_element_located(
@@ -149,7 +152,6 @@ class FullCheckoutFlowTool(BaseTool):
             )
 
             print("DEBUG: Checkout info page loaded")
-
 
             # =========================
             # USER INFO
@@ -170,9 +172,7 @@ class FullCheckoutFlowTool(BaseTool):
                 "postal-code"
             ).send_keys(postal_code)
 
-
             print("DEBUG: User info filled")
-
 
             # =========================
             # CONTINUE
@@ -193,7 +193,6 @@ class FullCheckoutFlowTool(BaseTool):
 
             print("DEBUG: Continue clicked")
 
-
             wait.until(
                 EC.url_contains(
                     "checkout-step-two.html"
@@ -201,7 +200,6 @@ class FullCheckoutFlowTool(BaseTool):
             )
 
             print("DEBUG: Step two page loaded")
-
 
             # =========================
             # FINISH
@@ -217,26 +215,22 @@ class FullCheckoutFlowTool(BaseTool):
 
             print("DEBUG: Finish clicked")
 
-
             confirmation = wait.until(
                 EC.presence_of_element_located(
                     (By.CLASS_NAME, "complete-header")
                 )
             ).text
 
-
             print(
                 "DEBUG: Confirmation text:",
                 confirmation
             )
-
 
             return {
                 "status": "success",
                 "product": product_name,
                 "confirmation": confirmation
             }
-
 
         except Exception as e:
 

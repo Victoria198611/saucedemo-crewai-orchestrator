@@ -94,7 +94,15 @@ class FullCheckoutFlowTool(BaseTool):
                 )
             )
 
-            add_button.click()
+            driver.execute_script(
+                "arguments[0].scrollIntoView({block:'center'});",
+                add_button
+            )
+
+            driver.execute_script(
+                "arguments[0].click();",
+                add_button
+            )
 
             print("DEBUG: Product added to cart")
 
@@ -108,7 +116,15 @@ class FullCheckoutFlowTool(BaseTool):
                 )
             )
 
-            cart_link.click()
+            driver.execute_script(
+                "arguments[0].scrollIntoView({block:'center'});",
+                cart_link
+            )
+
+            driver.execute_script(
+                "arguments[0].click();",
+                cart_link
+            )
 
             print("DEBUG: Cart opened")
 

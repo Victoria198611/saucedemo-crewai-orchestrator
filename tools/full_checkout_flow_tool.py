@@ -185,6 +185,19 @@ class FullCheckoutFlowTool(BaseTool):
 
             print("DEBUG: User info filled")
 
+            print(
+                "DEBUG: first-name value =",
+                driver.find_element(By.ID, "first-name").get_attribute("value")
+            )
+            print(
+                "DEBUG: last-name value =",
+                driver.find_element(By.ID, "last-name").get_attribute("value")
+            )
+            print(
+                "DEBUG: postal-code value =",
+                driver.find_element(By.ID, "postal-code").get_attribute("value")
+            )
+
             # =========================
             # CONTINUE
             # =========================
@@ -206,6 +219,17 @@ class FullCheckoutFlowTool(BaseTool):
             )
 
             print("DEBUG: Continue clicked")
+
+            try:
+                error_el = driver.find_element(
+                    By.CSS_SELECTOR,
+                    "[data-test='error']"
+                )
+                print("DEBUG: Error banner on page:", error_el.text)
+            except Exception:
+                print("DEBUG: No error banner found on page")
+
+            print("DEBUG: URL right after continue click:", driver.current_url)
 
             wait.until(
                 EC.url_contains(

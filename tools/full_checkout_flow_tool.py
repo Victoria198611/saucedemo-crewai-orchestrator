@@ -1,4 +1,3 @@
-
 from crewai.tools import BaseTool
 
 from selenium.webdriver.common.by import By
@@ -185,7 +184,10 @@ class FullCheckoutFlowTool(BaseTool):
                 continue_button
             )
 
-            continue_button.click()
+            driver.execute_script(
+                "arguments[0].click();",
+                continue_button
+            )
 
             print("DEBUG: Continue clicked")
 
@@ -207,7 +209,15 @@ class FullCheckoutFlowTool(BaseTool):
                 )
             )
 
-            finish_button.click()
+            driver.execute_script(
+                "arguments[0].scrollIntoView({block:'center'});",
+                finish_button
+            )
+
+            driver.execute_script(
+                "arguments[0].click();",
+                finish_button
+            )
 
             print("DEBUG: Finish clicked")
 

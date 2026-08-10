@@ -21,6 +21,7 @@ class FullCheckoutFlowTool(BaseTool):
     ):
 
         try:
+            SeleniumManager.quit_driver()
             driver = SeleniumManager.get_driver()
 
             wait = WebDriverWait(driver, 20)
@@ -243,6 +244,12 @@ class FullCheckoutFlowTool(BaseTool):
                 "DEBUG ERROR:",
                 str(e)
             )
+
+            try:
+                print("DEBUG: Current URL at failure:", driver.current_url)
+                print("DEBUG: Page title at failure:", driver.title)
+            except Exception:
+                pass
 
             return {
                 "status": "error",

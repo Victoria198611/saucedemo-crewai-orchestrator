@@ -15,7 +15,7 @@ class SeleniumManager:
 
             options = Options()
 
-            # GitHub Actions trebuie să ruleze headless
+
             headless = os.getenv("HEADLESS", "true").lower() == "true"
 
             if headless:

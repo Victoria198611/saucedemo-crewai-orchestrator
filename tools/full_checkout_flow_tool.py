@@ -1,8 +1,4 @@
-Aproape perfect — a mai rămas o singură linie nealiniată: print("DEBUG: Checkout clicked") are 8 spații în loc de 12 (vezi cum e "sărită" mai în stânga față de liniile de deasupra și de dedesubt).
 
-Ca să nu mai riști alte erori de indentare, îți dau tot fișierul complet, corect — poți să-l copiezi și să-l pui direct peste conținutul vechi:
-
-python
 from crewai.tools import BaseTool
 
 from selenium.webdriver.common.by import By
